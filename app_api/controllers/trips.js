@@ -4,10 +4,12 @@ const User = mongoose.model('users');
 
 // GET: /User - returns the user object
 const getUser = (req, res, callback) => {
-    if (req.payload && req.payload.email) {            
+    if (req.auth && req.auth.email) {  
+        //console.log(req.auth)          
       User
-        .findOne({ email : req.payload.email })         
+        .findOne({ email : req.auth.email })         
         .exec((err, user) => {
+            //console.log(user);
           if (!user) {
             return res
               .status(404)
@@ -71,6 +73,7 @@ const tripsFindCode = async (req, res) => {
 
 const tripsAddTrip = async (req,res) => {
     getUser(req, res,
+        //console.log("req: ", req),
         (req, res) => {
         Trip
         .create({
